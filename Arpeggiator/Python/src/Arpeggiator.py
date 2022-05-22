@@ -59,7 +59,8 @@ class Arpeggiator:
                 length = sample_intervals[i+1] - sample_intervals[i]
                 pos1 = int(write_position + sample_intervals[i])
                 pos2 = int(write_position + sample_intervals[i+1])
-                waveform[pos1:pos2] = np.kaiser(length, 5) * tf.generate_n_sample_chord(self.notes[note_index], n_harmonics, length, self.fs)
+                chord = tf.generate_cluster_chord(self.notes[note_index])    
+                waveform[pos1:pos2] = np.kaiser(length, 5) * tf.generate_n_sample_chord(chord, n_harmonics, length, self.fs)
                 note_index += 1
                 if note_index == len(self.note_freqs):
                     note_index = 0
