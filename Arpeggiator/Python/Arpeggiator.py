@@ -107,7 +107,7 @@ class Arpeggiator:
 
         
         
-save_destination = './test/sines/arpg.wav'
+save_destination = '../Test/sines/arpg.wav'
 
 intervals = [2, 2, 3, 2, 4, 3, 3, 2]
 
