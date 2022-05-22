@@ -4,26 +4,30 @@ from scipy.io import wavfile
 
 plt.close('all')
 
-def GetFrequencyFromNote(note_n):
+
+def get_frequency_from_note(note_n):
+    """
+    Give a note on the piano, returns the frequency in Hz of that note.
+    """
     
     return ((2)**(1/12))**(note_n-49) * 440
 
 
-def GenerateNSampleSine(frequency, n_samples, fs=44100):
+def generate_n_sample_sine(frequency, n_samples, sample_rate=44100):
     
     samples = np.arange(0, n_samples, 1)
     
-    t = samples * (1/fs)
+    t = samples * (1/sample_rate)
     
     return np.sin(2 * np.pi * frequency * t)
 
 
-def GenerateNSampleSineWithHarmonics(frequency, n_harmonics, n_samples, fs=44100):
+def generate_n_sample_sine_with_harmonics(frequency, n_harmonics, n_samples, sample_rate=44100):
     
     # Time vector
     samples = np.arange(0, n_samples, 1)
     
-    t = samples * (1/fs)
+    t = samples * (1/sample_rate)
     
     decay = 0.1
     decay_factor = 5
@@ -39,9 +43,10 @@ def GenerateNSampleSineWithHarmonics(frequency, n_harmonics, n_samples, fs=44100
     return output
 
 
-def Mag2dB(mag):
+def mag2dB(mag):
     
     return 20*np.log10(np.abs(mag))
+
 
 class Arpeggiator:
     
@@ -58,7 +63,7 @@ class Arpeggiator:
         
         i = 0
         for note in notes:
-            self.note_freqs[i] = GetFrequencyFromNote(note)
+            self.note_freqs[i] = get_frequency_from_note(note)
             i += 1
             
         self.samples_per_beat = self.fs / (self.bpm / 60)
@@ -95,7 +100,7 @@ class Arpeggiator:
             for i in range(sample_intervals.shape[0] - 1):
                     
                 length = sample_intervals[i+1] - sample_intervals[i]
-                waveform[int(write_position + sample_intervals[i]):int(write_position + sample_intervals[i+1])] = np.kaiser(length, 5) * GenerateNSampleSineWithHarmonics(self.note_freqs[note_index], n_harmonics, length, self.fs)            
+                waveform[int(write_position + sample_intervals[i]):int(write_position + sample_intervals[i+1])] = np.kaiser(length, 5) * generate_n_sample_sine_with_harmonics(self.note_freqs[note_index], n_harmonics, length, self.fs)
                 note_index += 1
                 if note_index == len(self.note_freqs):
                     note_index = 0
@@ -105,7 +110,6 @@ class Arpeggiator:
                 
         return waveform
 
-        
         
 save_destination = '../test/sines/arpg.wav'
 
@@ -126,8 +130,8 @@ data = arpg.GenerateWaveform(seconds, 1)
 chord = [40, 44, 47, 49]
 
 for i in chord:
-    freq = GetFrequencyFromNote(i)
-    data += 0.1 * GenerateNSampleSineWithHarmonics(freq, 10, seconds * fs, fs)
+    freq = get_frequency_from_note(i)
+    data += 0.1 * generate_n_sample_sine_with_harmonics(freq, 10, seconds * fs, fs)
 
 data_f = np.fft.rfft(data)
 freqs = np.fft.rfftfreq(data.shape[0]) * fs
@@ -138,5 +142,5 @@ plt.figure()
 plt.subplot(211)
 plt.plot(data)
 plt.subplot(212)
-plt.semilogx(freqs, Mag2dB(data_f))
+plt.semilogx(freqs, mag2dB(data_f))
 plt.xlim([20, fs/2])
