@@ -12,11 +12,11 @@ plt.close('all')
 
 save_destination = './sines/arpg.wav'
 
-intervals = [1, 2, 2, 2, 1]
+intervals = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 fs = 44100.
 
-notes = [Note.A4, Note.C5, Note.Fs4, Note.D5, Note.E5]
+notes = [Note.A4, Note.C5, Note.D5, Note.Ef5, Note.F5]
 
 seconds = 8
 
