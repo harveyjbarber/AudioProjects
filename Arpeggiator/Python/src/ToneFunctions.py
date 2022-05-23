@@ -5,6 +5,7 @@ waveforms
 
 import numpy as np
 
+
 def get_frequency_from_note(note_n):
     """
     Give a note on the piano, returns the frequency in Hz of that note.

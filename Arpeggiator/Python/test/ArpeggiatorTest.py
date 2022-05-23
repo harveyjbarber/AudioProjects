@@ -3,19 +3,20 @@ from matplotlib import pyplot as plt
 from scipy.io import wavfile
 import Arpeggiator as ap
 import Utils as ut
+import NotesEnum as NoteEnum
 
+Note = NoteEnum.Note
 
 plt.close('all')
 
 
-save_destination = '../test/sines/arpg.wav'
+save_destination = './sines/arpg.wav'
 
-intervals = [1, 2, 2, 2]
+intervals = [1, 2, 2, 2, 1]
 
 fs = 44100.
 
-note = 28
-notes = [40, 38, 39, 44]
+notes = [Note.A4, Note.C5, Note.Fs4, Note.D5, Note.E5]
 
 seconds = 8
 
