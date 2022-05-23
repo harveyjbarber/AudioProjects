@@ -146,3 +146,67 @@ def generate_n_sample_chord(chord, n_harmonics, n_samples, sample_rate=44100):
                                                         n_samples, sample_rate)
     
     return output
+
+
+def generate_square_wave(note, n_samples, amplitude, sample_rate=44100):
+    """
+    Generate a square wave for a given note and amplitude of length n samples.
+
+    Parameters
+    ----------
+    note : int
+        Numerical representation of a piano key.
+    n_samples : int
+        Number of samples to generate.
+    amplitude : float
+        Floating point amplitude of the signal.
+    sample_rate : int, optional
+        The sample rate of the signal. The default is 44100.
+
+    Returns
+    -------
+    ndarray
+        An array containing the signal.
+
+    """
+    
+    samples = np.arange(0, n_samples, 1)
+    
+    t = samples * (1/sample_rate)
+    
+    freq = get_frequency_from_note(note)
+    
+    return np.sign(np.sin(2 * np.pi * freq * t)) * amplitude
+
+
+def generate_triangular_wave(note, n_samples, amplitude, sample_rate=44100):
+    """
+    Generate a triangular wave for a given note and amplitude of length n 
+    samples.
+
+    Parameters
+    ----------
+    note : int
+        Numerical representation of a piano key.
+    n_samples : int
+        Number of samples to generate.
+    amplitude : float
+        Floating point amplitude of the signal.
+    sample_rate : int, optional
+        The sample rate of the signal. The default is 44100.
+
+    Returns
+    -------
+    ndarray
+        An array containing the signal.
+
+    """
+    
+    samples = np.arange(0, n_samples, 1)
+    
+    t = samples * (1/sample_rate)
+    
+    freq = get_frequency_from_note(note)
+    period = 1./freq
+    
+    return ((4 * amplitude) / period) * np.abs(((t - period/4) % period) - period/2) - amplitude
